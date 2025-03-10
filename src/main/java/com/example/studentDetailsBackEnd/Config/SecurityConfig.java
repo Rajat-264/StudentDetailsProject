@@ -22,18 +22,19 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .cors(withDefaults()) // Enable CORS globally
-            .csrf(AbstractHttpConfigurer::disable) // Disable CSRF for testing
+            .cors(withDefaults())  // ✅ Enable CORS globally
+            .csrf(AbstractHttpConfigurer::disable) // ✅ Disable CSRF for API requests
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/auth/**").permitAll() // Allow login-related API calls
+                .requestMatchers("/", "/auth/**").permitAll()
                 .requestMatchers("/student/**").hasRole("STUDENT")
                 .requestMatchers("/faculty/**").hasRole("FACULTY")
-                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/admin/**").hasRole("admin")  // ✅ Only Admins can add
+                .requestMatchers("/api/announcements/all").authenticated()   // ✅ All authenticated users can view
                 .anyRequest().authenticated()
             )
             .oauth2Login(oauth2 -> oauth2
-                .successHandler(successHandler) // ✅ Set custom login success handler
+                .successHandler(successHandler)
             );
 
         return http.build();
