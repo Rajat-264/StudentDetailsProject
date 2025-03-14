@@ -27,10 +27,10 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/", "/auth/**").permitAll()
-                .requestMatchers("/student/**").hasRole("STUDENT")
-                .requestMatchers("/faculty/**").hasRole("FACULTY")
+                .requestMatchers("/student/**").authenticated()
+                .requestMatchers("/faculty/**").hasRole("faculty")
                 .requestMatchers("/admin/**").hasRole("admin")  // ✅ Only Admins can add
-                .requestMatchers("/api/announcements/all").authenticated()   // ✅ All authenticated users can view
+                .requestMatchers("/api/**").permitAll()   // ✅ All authenticated users can view
                 .anyRequest().authenticated()
             )
             .oauth2Login(oauth2 -> oauth2

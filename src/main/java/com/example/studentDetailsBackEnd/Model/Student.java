@@ -32,13 +32,26 @@ public class Student {
     @Column(nullable = false)
     private String program;
 
-    @Column(nullable = false)
-    private int yearOfStudy;
-
     @Column(unique = true)
-    private String APAARID;
+    private String apaarid;
 
     @ManyToOne
     @JoinColumn(name = "facultyID", referencedColumnName = "facultyID", foreignKey = @jakarta.persistence.ForeignKey(name = "student_facultyID"))
     private Faculty facultyID;
+
+    public String getName() {
+        return name;
+    }
+
+    public String getRollNo() {
+        return rollNo;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public int getStudentID() {
+        return studentID;
+    }
 }

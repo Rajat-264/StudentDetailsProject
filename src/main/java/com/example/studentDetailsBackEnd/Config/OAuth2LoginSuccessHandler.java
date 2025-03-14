@@ -40,7 +40,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
         if (role == null) {
             System.out.println("🚨 No role found in session, redirecting to role selection page.");
-            response.sendRedirect("http://localhost:5173/select-role");
+            response.sendRedirect("http://localhost:5173/");
             return;
         }
 
