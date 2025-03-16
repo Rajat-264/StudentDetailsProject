@@ -1,5 +1,7 @@
 package com.example.studentDetailsBackEnd.Model;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,12 +34,15 @@ public class Student {
     @Column(nullable = false)
     private String program;
 
+    @Column(nullable = false)
+    private String branch;
+
     @Column(unique = true)
     private String apaarid;
 
     @ManyToOne
     @JoinColumn(name = "facultyID", referencedColumnName = "facultyID", foreignKey = @jakarta.persistence.ForeignKey(name = "student_facultyID"))
-    private Faculty facultyID;
+    private Faculty faculty;
 
     public String getName() {
         return name;
@@ -53,5 +58,25 @@ public class Student {
 
     public int getStudentID() {
         return studentID;
+    }
+
+    public String getDob() {
+        return dob;
+    }
+
+    public String getProgram() {
+        return program;
+    }
+
+    public String getBranch() {
+        return branch;
+    }
+
+    public String getApaarId() {
+        return apaarid;
+    }
+
+    public Faculty getFaculty() {
+        return faculty;
     }
 }

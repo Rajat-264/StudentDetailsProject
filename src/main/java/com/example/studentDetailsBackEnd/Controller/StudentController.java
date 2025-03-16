@@ -3,6 +3,8 @@ package com.example.studentDetailsBackEnd.Controller;
 import com.example.studentDetailsBackEnd.Model.Student;
 import com.example.studentDetailsBackEnd.Service.StudentService;
 import com.example.studentDetailsBackEnd.repository.StudentRepository;
+import com.example.studentDetailsBackEnd.repository.FacultyRepository;
+import com.example.studentDetailsBackEnd.Model.Faculty;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.HashMap;
 import java.util.Optional;
 
 @RestController
@@ -24,6 +27,8 @@ public class StudentController {
     
     @Autowired
     private StudentRepository studentRepository;
+
+    private FacultyRepository facultyRepository;
 
     @Autowired
     public StudentController(StudentService studentService) {
@@ -86,6 +91,37 @@ public ResponseEntity<?> getCurrentStudent(@AuthenticationPrincipal OAuth2User p
     Student student = studentOpt.get();
     System.out.println("✅ Found student: " + student.getStudentID());
     return ResponseEntity.ok(Map.of("studentID", student.getStudentID()));
+}
+
+@GetMapping("/profile/{studentID}")
+public ResponseEntity<?> getStudentProfile(@PathVariable int studentID) {
+    
+    try{
+    Optional<Student> studentOpt = studentRepository.findById(studentID);
+
+    if (studentOpt.isEmpty()) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "❌ Student not found!"));
+    }
+
+    Student student = studentOpt.get();
+    Faculty faculty = student.getFaculty();  // ✅ Correct way to fetch faculty
+    String facultyName = (faculty != null) ? faculty.getName() : "N/A";
+    
+    Map<String, Object> response = new HashMap<>();
+    response.put("name", student.getName());
+    response.put("dob", student.getDob() != null ? student.getDob().toString() : "Not Provided");
+    response.put("email", student.getEmail());
+    response.put("roll_no", student.getRollNo());
+    response.put("branch", student.getBranch());
+    response.put("program", student.getProgram());
+    response.put("apaarid", student.getApaarId());
+    response.put("facultyName", (faculty != null) ? faculty.getName() : "N/A");
+
+    return ResponseEntity.ok(response);
+    }
+    catch(Exception e){
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "❌ Internal Server Error!"));
+    }
 }
 
 }

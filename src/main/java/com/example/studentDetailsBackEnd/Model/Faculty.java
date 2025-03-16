@@ -20,4 +20,9 @@ public class Faculty {
 
     @Column(nullable = false, unique = true)
     private String email;
+
+    public String getName() {
+        return name;
+    } 
 }
+
