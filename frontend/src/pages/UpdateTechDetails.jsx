@@ -74,7 +74,7 @@ const UpdateTechDetails = () => {
         }
         try {
             setLoading(true);
-            const response = await axios.post("http://localhost:8080/api/events/add", {
+            const response = await axios.post("http://localhost:8080/api/events/technical/add", {
                 name: formData.customEventName
             });
 
@@ -98,9 +98,10 @@ const UpdateTechDetails = () => {
         }
         try {
             setLoading(true);
-            const response = await axios.post("http://localhost:8080/api/eventCategories/add", {
-                categoryName: formData.customEventCategory
-            });
+            const response = await axios.post("http://localhost:8080/api/eventCategories/add", 
+                { eventCategoryName: formData.customEventCategory }, // ✅ Ensure correct key
+                { headers: { "Content-Type": "application/json" } } // ✅ Add headers
+            );
 
             alert("✅ New category added successfully!");
             setFormData({ ...formData, eventCategoryID: response.data.eventCategoryID, customEventCategory: "" });
@@ -114,23 +115,26 @@ const UpdateTechDetails = () => {
     };
 
     // ✅ Form Submission
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        console.log("🛠️ Submitting data:", formData);
-
-        if (!formData.studentID) {
-            alert("❌ Student ID is missing. Please log in again.");
-            return;
-        }
-
+    const handleSubmit = async () => {
+        const requestData = {
+            studentID: selectedStudentId,
+            eventID: selectedEventID, // 🔹 Ensure eventID is sent, not eventName
+            eventCategoryID: selectedEventCategoryID,
+            eventDate: eventDate.toISOString().split("T")[0], // Convert to `yyyy-MM-dd`
+            role: selectedRole,
+            achievement: achievement,
+            achievementDetails: achievementDetails,
+            otherDetails: otherDetails
+        };
+    
         try {
-            await addTechnicalDetail(formData);
-            alert("✅ Technical details added successfully!");
+            const response = await axios.post("/api/sport-details/add", requestData);
+            alert("✅ Details submitted successfully!");
         } catch (error) {
-            console.error("❌ Failed to submit details:", error.response?.data || error.message);
-            alert("❌ Submission failed. Please try again.");
+            alert("❌ Failed to submit details: " + error.response.data.message);
         }
     };
+    
 
     return (
         <div className="grid grid-cols-6 mt-20">

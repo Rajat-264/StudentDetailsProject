@@ -10,7 +10,7 @@ const Announcements = () => {
 
   return (
     <div className='mt-6'>
-        <h1 className='text-3xl font-bold underline underline-offset-8'> Announcements</h1>
+        <h1 className='text-3xl font-bold underline underline-offset-8'>📢 Announcements</h1>
           <ul className="superlist">
               {announcements.length === 0 ? <p>No announcements available.</p> :
                   announcements.map(ann => (

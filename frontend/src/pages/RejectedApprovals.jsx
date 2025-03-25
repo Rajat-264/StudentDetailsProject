@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar1 from '../components/Sidebar1';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const RejectedApprovals = () => {
     const [requests, setRequests] = useState([]);

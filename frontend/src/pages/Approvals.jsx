@@ -8,12 +8,9 @@ import { Link } from 'react-router-dom'
 const Approvals = () => {
     return (
         <div className="grid grid-cols-6 mt-20">
-          <div>
-            <Sidebar1 />
-          </div>
-          <div className="col-span-5 p-5">
+          <div className="col-span-5 p-5 col-start-2 ml-10 mt-10">
             <div>
-              <h1 className='text-2xl font-bold'>Approvals</h1>
+              <h1 className='text-2xl font-bold mb-10'>Approvals</h1>
               <div className=" mt-5">
                 <Link to="/faculty/approvals/pending-approvals" style={{ textDecoration: "none" }}>
                 <UpdateDetailCard updateCardText={"Pending Approvals"} updateCardImage={"https://t3.ftcdn.net/jpg/06/15/01/96/240_F_615019661_OMfklHQ2szeHoTPzwESacn4XWMbRFLOU.jpg"} />
